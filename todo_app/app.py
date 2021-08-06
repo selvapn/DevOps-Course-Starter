@@ -9,6 +9,7 @@ from todo_app.data.session_items import add_card, getDoneCard,getTodoCard,move_c
 app = Flask(__name__)
 app.config.from_object(Config)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == "POST":
@@ -18,6 +19,7 @@ def index():
             return redirect(url_for('moveCard'))
     else:
         return render_template('index.html',items=getTodoCard(),doingitems=getDoingCard(),doneitems=getDoneCard())
+
 
 @app.route('/addcard',methods=['GET','POST'])
 def addCard():
