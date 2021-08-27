@@ -31,11 +31,11 @@ def add_card(cardname,desc):
 def move_card(cardid,dest):
     cardid=cardid.strip()
     if dest =="Move to Todo":
-        destid="610beb5a99354405b1f4ec6f"
+        destid=os.environ.get('TRELLO_TODO')
     elif dest == "Move to Doing":
-        destid="610beb5a99354405b1f4ec70"
+        destid=os.environ.get('TRELLO_DOING')
     elif dest == "Move to Done":
-        destid="610beb5a99354405b1f4ec71"
+        destid=os.environ.get('TRELLO_DONE')
     moveurl="https://api.trello.com/1/cards/"+cardid+"/?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN+"&idList="+destid
     response = requests.put(moveurl)
     return response.status_code,response.text
