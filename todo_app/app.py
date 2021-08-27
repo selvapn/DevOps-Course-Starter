@@ -35,20 +35,11 @@ def addCard():
 
 @app.route('/movecard/<cardid>/<destid>',methods=['GET','POST'])
 def moveCard(cardid,destid):
-    print("testing")
-#    if request.method == "POST":
-#        cardid =request.form["trello_id"]
-#        destid=request.form["movecard"]
-    print("card id ")
     get=move_card(cardid,destid)
     if get[0] != 200:
         return render_template('error.html',Err=get[0],Errtext="Cannot Post Data")
     else:
         return redirect('/')
-    #else:
-
-    return render_template('index.html',items=todoCards.getDoingCards(),doingitems=doingCards.getDoingCards(),doneitems=doneCards.getDoneCards())
-
     
 if __name__ == '__main__':
     app.run()
