@@ -6,14 +6,15 @@ import requests
 import json
 import os
 class getCards:
-    def __init__(self,item):
-        self.item="https://api.trello.com/1/lists/"+item+"/cards/?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN#
+    def __init__(self,id):
+        self.url="https://api.trello.com/1/lists/"+id+"/cards/?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN
+
 
     def getData(self):
-        response = requests.get(self.item)
+        response = requests.get(self.url)
         data = response.text
-        cardname=json.loads(data)
-        return cardname
+        card=json.loads(data)
+        return card
 
     def getTodoCards(self):
          return getCards.getData(self)
@@ -24,8 +25,8 @@ class getCards:
     def getDoneCards(self):
         return getCards.getData(self)
 
-def add_card(cardname,desc):
-    addurl="https://api.trello.com/1/cards?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN+"&id=610bec1beb3b0116846ba04a&idList=610beb5a99354405b1f4ec6f&name="+cardname+"&desc="+desc
+def add_card(card,desc):
+    addurl="https://api.trello.com/1/cards?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN+"&id=610bec1beb3b0116846ba04a&idList=610beb5a99354405b1f4ec6f&name="+card+"&desc="+desc
     requests.post(addurl)
 
 def move_card(cardid,dest):

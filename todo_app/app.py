@@ -13,7 +13,7 @@ doingCards=getCards(os.environ.get('TRELLO_DOING'))
 doneCards=getCards(os.environ.get('TRELLO_DONE'))
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
     if request.method == "POST":
         if request.form['card'] == "AddCard":
