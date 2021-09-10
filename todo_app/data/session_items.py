@@ -1,69 +1,42 @@
-from flask import session
-
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
-]
-
-
-def get_items():
-    """
-    Fetches all saved items from the session.
-
-    Returns:
-        list: The list of saved items.
-    """
-    return session.get('items', _DEFAULT_ITEMS.copy())
+from flask import session,render_template
+from flask.templating import Environment
+from flask.wrappers import Response
+from todo_app.flask_config import Config
+import requests
+import json
+import os
+class getCards:
+    def __init__(self,id):
+        self.url="https://api.trello.com/1/lists/"+id+"/cards/?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN
 
 
-def get_item(id):
-    """
-    Fetches the saved item with the specified ID.
+    def getData(self):
+        response = requests.get(self.url)
+        data = response.text
+        card=json.loads(data)
+        return card
 
-    Args:
-        id: The ID of the item.
+    def getTodoCards(self):
+         return getCards.getData(self)
 
-    Returns:
-        item: The saved item, or None if no items match the specified ID.
-    """
-    items = get_items()
-    return next((item for item in items if item['id'] == int(id)), None)
+    def getDoingCards(self):
+        return getCards.getData(self)
 
+    def getDoneCards(self):
+        return getCards.getData(self)
 
-def add_item(title):
-    """
-    Adds a new item with the specified title to the session.
+def add_card(card,desc):
+    addurl="https://api.trello.com/1/cards?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN+"&id="+os.environ.get('TRELLO_ID')+"&idList="+os.environ.get('TRELLO_TODO')+"&name="+card+"&desc="+desc
+    requests.post(addurl)
 
-    Args:
-        title: The title of the item.
-
-    Returns:
-        item: The saved item.
-    """
-    items = get_items()
-
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
-
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
-
-    # Add the item to the list
-    items.append(item)
-    session['items'] = items
-
-    return item
-
-
-def save_item(item):
-    """
-    Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
-
-    Args:
-        item: The item to save.
-    """
-    existing_items = get_items()
-    updated_items = [item if item['id'] == existing_item['id'] else existing_item for existing_item in existing_items]
-
-    session['items'] = updated_items
-
-    return item
+def move_card(cardid,dest):
+    cardid=cardid.strip()
+    if dest =="Move to Todo":
+        destid=os.environ.get('TRELLO_TODO')
+    elif dest == "Move to Doing":
+        destid=os.environ.get('TRELLO_DOING')
+    elif dest == "Move to Done":
+        destid=os.environ.get('TRELLO_DONE')
+    moveurl="https://api.trello.com/1/cards/"+cardid+"/?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN+"&idList="+destid
+    response = requests.put(moveurl)
+    return response.status_code,response.text

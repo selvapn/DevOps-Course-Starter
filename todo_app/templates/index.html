@@ -1,18 +1,40 @@
 {% extends "layout.html" %}
-{% block title %}To-Do App{% endblock %}
-
+{% block title %}Trello Board{% endblock %}
 {% block content %}
   <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
+    <h1 class="display-5">To-Do Board</h1>
+    <p class="lead">Cards</p>
   </div>
-
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
-      <ul class="list-group mb-4">
-        <!-- List the todo items here -->
-      </ul>
+      <h5>To-Do</h5>
+        <ul class="list-group mb-4">
+          {% for itm in items %} 
+            <li>{{ itm.id }} - {{itm.name}} - {{itm.desc}}
+              <a class="btn btn-primary" href="{{ url_for('moveCard',cardid=itm.id,destid='Move to Doing') }}">Move card to Doing</a>
+              <a class="btn btn-primary" href="{{ url_for('moveCard',cardid=itm.id,destid='Move to Done') }}">Move card to Done</a>
+            </li>
+          {% endfor %} 
+        </ul>
+      <h5>Doing</h5>
+        <ul class="list-group mb-4">
+          {% for doitm in doingitems %} 
+            <li>{{ doitm.id }} - {{doitm.name}} - {{doitm.desc}}
+              <a class="btn btn-primary" href="{{ url_for('moveCard',cardid=doitm.id,destid='Move to Todo') }}">Move card to Todo</a>
+              <a class="btn btn-primary" href="{{ url_for('moveCard',cardid=doitm.id,destid='Move to Done') }}">Move card to Done</a>    
+            </li>
+          {% endfor %}
+        </ul>
+      <h5>Done</h5>
+        <ul class="list-group mb-4">
+          {% for doneitm in doneitems %} 
+            <li>{{ doneitm.id }} - {{doneitm.name}} - {{doneitm.desc}}
+              <a class="btn btn-primary" href="{{ url_for('moveCard',cardid=doneitm.id,destid='Move to Todo') }}">Move card to Todo</a>
+              <a class="btn btn-primary" href="{{ url_for('moveCard',cardid=doneitm.id,destid='Move to Doing') }}">Move card to Doing</a>    
+            </li> 
+          {% endfor %}
+        </ul>
+      <a class="btn btn-primary" href="{{ url_for('addCard') }}">Add card</a>
     </div>
   </div>
 {% endblock %}

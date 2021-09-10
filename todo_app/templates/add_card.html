@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Trello Board{% endblock %}
+{% block content %}
+  <div class="jumbotron">
+    <h1 class="display-4">Trello Board</h1>
+    <p class="lead">Add Card</p>
+  </div>
+  <div class="row">
+    <div class="col-md-12"></div>
+  </div>
+  <h2>Add Trello Card</h2>
+  <form action="" method="POST" class="add-trello">
+    <div class="add-trello">
+      <label for="trello_title">Card Name: </label>
+      <input type="trello_title" name="trello_title" id="trello_title" required>
+      <label for="trello_desc">Card Description: </label>
+      <input type="trello_desc" name="trello_desc" id="trello_desc" required>
+    </div>
+    <div class="add-trello">
+      <input type="submit" value="Enter">
+    </div>
+  </form>
+{% endblock %}
