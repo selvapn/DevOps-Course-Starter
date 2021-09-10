@@ -26,7 +26,7 @@ class getCards:
         return getCards.getData(self)
 
 def add_card(card,desc):
-    addurl="https://api.trello.com/1/cards?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN+"&id=610bec1beb3b0116846ba04a&idList=610beb5a99354405b1f4ec6f&name="+card+"&desc="+desc
+    addurl="https://api.trello.com/1/cards?key="+Config.TRELLO_KEY+"&token="+Config.TRELLO_TOKEN+"&id="+os.environ.get('TRELLO_ID')+"&idList="+os.environ.get('TRELLO_TODO')+"&name="+card+"&desc="+desc
     requests.post(addurl)
 
 def move_card(cardid,dest):
